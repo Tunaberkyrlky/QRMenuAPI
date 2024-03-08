@@ -1,0 +1,38 @@
+﻿Packages
+Microsoft.ASPNetCore.Identity => Kullanıcı kontrolü ve hazır kullanıcı şeması
+Microsoft.ASPNetCore.Identity.EntityFrameworkCore
+Microsoft.EntityFrameworkCore.Tools
+Microsoft.EntityFrameworkCore.SqlServer => Sql bağlantısı için
+
+
+
+
+________Log________
+QRMenuAPI/Models folder created
+
+QRMenuAPI/Models/ApplicationUser class created and inherited from IdentityUser
+QRMenuAPI/Models/Company class added
+QRMenuAPI/Models/State class added
+Properties are added.
+
+QRMenuAPI/Data created
+QRMenuAPI/Data/ApplicationContext class added and inherited from IdentityDbContext
+QRMenuAPI/Data/ApplicationContext Ctor added
+All Db classes has to be added to ApplicationContext
+
+Connection Strind Added
+
+--If you are on windows sellect user etc. option when creating the project, this will edit program.cs and add builders--
+
+QRMenuAPI/program.cs builder.Services.AddDbContext...,
+QRMenuAPI/program.cs builder.Services.AddIdentityCore...,
+QRMenuAPI/program.cs builder.Services.AddAuthentication();,
+QRMenuAPI/program.cs builder.Services.AddAuthorization(); added
+
+QRMenuAPI/program.cs app.UseAuthentication();
+QRMenuAPI/program.cs app.UseAuthorization(); added
+
+Add Initial migration
+
+
+
