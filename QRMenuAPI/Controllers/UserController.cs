@@ -52,11 +52,12 @@ namespace QRMenuAPI.Controllers
 
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public  ActionResult PutApplicationUser(string id, ApplicationUser applicationUser, string? password= null, string? currentPassword = null)
+        [HttpPut("{id}")]                                                                   //do not change password using put
+        public  ActionResult PutApplicationUser(string id, ApplicationUser applicationUser/*, string? password= null, string? currentPassword = null*/)
         {
             var existingApplicationUser = _userManager.FindByIdAsync(id).Result;
 
+            existingApplicationUser.UserName = applicationUser.UserName;
             existingApplicationUser.Email = applicationUser.Email;
             existingApplicationUser.Name = applicationUser.Name;
             existingApplicationUser.PhoneNumber = applicationUser.PhoneNumber;
@@ -64,10 +65,10 @@ namespace QRMenuAPI.Controllers
 
             _userManager.UpdateAsync(existingApplicationUser).Wait();
 
-            if (password!=null)
-            {
-                _userManager.ChangePasswordAsync(existingApplicationUser, currentPassword, password);
-            }
+            //if (password!=null)
+            //{
+            //    IdentityResult identityResult = _userManager.ChangePasswordAsync(existingApplicationUser, currentPassword, password);
+            //}
             return NoContent();
         }
 

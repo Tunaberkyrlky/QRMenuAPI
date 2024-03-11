@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using QRMenuAPI.Models;
 
-namespace QRMenuQPI.Models
+namespace QRMenuAPI.Models
 {
     public class Company
     {

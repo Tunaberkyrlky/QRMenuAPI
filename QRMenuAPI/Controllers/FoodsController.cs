@@ -12,55 +12,55 @@ namespace QRMenuAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompaniesController : ControllerBase
+    public class FoodsController : ControllerBase
     {
         private readonly ApplicationContext _context;
 
-        public CompaniesController(ApplicationContext context)
+        public FoodsController(ApplicationContext context)
         {
             _context = context;
         }
 
-        // GET: api/Companies
+        // GET: api/Foods
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
+        public async Task<ActionResult<IEnumerable<Food>>> GetFoods()
         {
-          if (_context.Companies == null)
+          if (_context.Foods == null)
           {
               return NotFound();
           }
-            return await _context.Companies.ToListAsync();
+            return await _context.Foods.ToListAsync();
         }
 
-        // GET: api/Companies/5
+        // GET: api/Foods/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Company>> GetCompany(int id)
+        public async Task<ActionResult<Food>> GetFood(int id)
         {
-          if (_context.Companies == null)
+          if (_context.Foods == null)
           {
               return NotFound();
           }
-            var company = await _context.Companies.FindAsync(id);
+            var food = await _context.Foods.FindAsync(id);
 
-            if (company == null)
+            if (food == null)
             {
                 return NotFound();
             }
 
-            return company;
+            return food;
         }
 
-        // PUT: api/Companies/5
+        // PUT: api/Foods/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCompany(int id, Company company)
+        public async Task<IActionResult> PutFood(int id, Food food)
         {
-            if (id != company.Id)
+            if (id != food.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(company).State = EntityState.Modified;
+            _context.Entry(food).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace QRMenuAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CompanyExists(id))
+                if (!FoodExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace QRMenuAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Companies
+        // POST: api/Foods
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Company>> PostCompany(Company company)
+        public async Task<ActionResult<Food>> PostFood(Food food)
         {
-          if (_context.Companies == null)
+          if (_context.Foods == null)
           {
-              return Problem("Entity set 'ApplicationContext.Companies'  is null.");
+              return Problem("Entity set 'ApplicationContext.Foods'  is null.");
           }
-            _context.Companies.Add(company);
+            _context.Foods.Add(food);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCompany", new { id = company.Id }, company);
+            return CreatedAtAction("GetFood", new { id = food.Id }, food);
         }
 
-        // DELETE: api/Companies/5
+        // DELETE: api/Foods/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCompany(int id)
+        public async Task<IActionResult> DeleteFood(int id)
         {
-            if (_context.Companies == null)
+            if (_context.Foods == null)
             {
                 return NotFound();
             }
-            var company = await _context.Companies.FindAsync(id);
-            if (company == null)
+            var food = await _context.Foods.FindAsync(id);
+            if (food == null)
             {
                 return NotFound();
             }
 
-            _context.Companies.Remove(company);
+            _context.Foods.Remove(food);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CompanyExists(int id)
+        private bool FoodExists(int id)
         {
-            return (_context.Companies?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Foods?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

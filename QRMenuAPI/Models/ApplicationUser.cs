@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
-using QRMenuQPI.Models;
+using QRMenuAPI.Models;
 
 namespace QRMenuAPI.Models
 {
