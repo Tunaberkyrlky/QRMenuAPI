@@ -8,31 +8,72 @@ Microsoft.EntityFrameworkCore.SqlServer => Sql bağlantısı için
 
 
 ________Log________
-QRMenuAPI/Models folder created
 
-QRMenuAPI/Models/ApplicationUser class created and inherited from IdentityUser
-QRMenuAPI/Models/Company class added
-QRMenuAPI/Models/State class added
+
+--------Day1-------
+QRMenuAPI/Models: folder created
+
+QRMenuAPI/Models/ApplicationUser: class created and inherited from IdentityUser
+QRMenuAPI/Models/Company: class added
+QRMenuAPI/Models/State: class added
 Properties are added.
 
 QRMenuAPI/Data created
-QRMenuAPI/Data/ApplicationContext class added and inherited from IdentityDbContext
-QRMenuAPI/Data/ApplicationContext Ctor added
+QRMenuAPI/Data/ApplicationContext: class added and inherited from IdentityDbContext
+QRMenuAPI/Data/ApplicationContext: Ctor added
 All Db classes has to be added to ApplicationContext
 
 Connection Strind Added
 
---If you are on windows sellect user etc. option when creating the project, this will edit program.cs and add builders--
+--If you are on windows sellect user etc. option when creating the project, this will edit program.cs and builders are added automatically--
 
-QRMenuAPI/program.cs builder.Services.AddDbContext...,
-QRMenuAPI/program.cs builder.Services.AddIdentityCore...,
-QRMenuAPI/program.cs builder.Services.AddAuthentication();,
-QRMenuAPI/program.cs builder.Services.AddAuthorization(); added
+QRMenuAPI/program.cs: builder.Services.AddDbContext...,
+QRMenuAPI/program.cs: builder.Services.AddIdentityCore...,
+QRMenuAPI/program.cs: builder.Services.AddAuthentication();,
+QRMenuAPI/program.cs: builder.Services.AddAuthorization(); added
 
-QRMenuAPI/program.cs app.UseAuthentication();
-QRMenuAPI/program.cs app.UseAuthorization(); added
+QRMenuAPI/program.cs: app.UseAuthentication();
+QRMenuAPI/program.cs: app.UseAuthorization(); added
+
+
+---------Day2----------
+QRMenuAPI/Data/ApplicationContext: protected override void OnModelCreating method added
 
 Add Initial migration
+update database
 
+AzureDataStudio: Fill State table with state data
+
+New Controller Scaffold (API Controller with actions using Entity Framework)  for companies.
+
+NOTE: PUT: Update POST: Create
+
+Run the code and Create a company with swagger post request
+
+New Controller Scaffold (API Controller with actions using Entity Framework)  for ApplicationUser.
+QRMenuAPI/Controllers/UserController: Dependency Injection for UserManager.
+QRMenuAPI/Controllers/UserController:[HttpGet] return type changed with usermanager
+QRMenuAPI/Controllers/UserController:[HttpGet("{id}")] delete if block
+QRMenuAPI/Controllers/UserController:[HttpGet("{id}")] return type changed with usermanager
+QRMenuAPI/Controllers/UserController:[HttpPost] delete all until return block
+QRMenuAPI/Controllers/UserController:[HttpPost] await _userManager.CreateAsync(applicationUser, password);
+
+
+Run the code and Create a user with swagger post request
+userName: samet password: samet123.
+
+QRMenuAPI/Controllers/UserController: [HttpPut("{id}")] delete all until return
+QRMenuAPI/Controllers/UserController: [HttpPut("{id}")] find user by given id
+QRMenuAPI/Controllers/UserController: [HttpPut("{id}")] change properties witch you want
+QRMenuAPI/Controllers/UserController: [HttpPut("{id}")] update user 
+QRMenuAPI/Controllers/UserController: [HttpPut("{id}")] add changepassword
+
+QRMenuAPI/Controllers/UserController: [HttpDelete("{id}")] use usermanager to find user
+QRMenuAPI/Controllers/UserController: [HttpDelete("{id}")] check if it's null
+QRMenuAPI/Controllers/UserController: [HttpDelete("{id}")] soft delete  
+QRMenuAPI/Controllers/UserController: [HttpDelete("{id}")] return
+
+QRMenuAPI/Models/Restaurant: Restaurant class added
+QRMenuAPI/Data/ApplicationContext: Restaurant DbSet added
 
 

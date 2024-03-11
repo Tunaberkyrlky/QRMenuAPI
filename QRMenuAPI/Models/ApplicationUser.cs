@@ -19,7 +19,7 @@ namespace QRMenuAPI.Models
         [EmailAddress]
         [StringLength(100, MinimumLength = 5)]
         [Column(TypeName = "nvarchar(100)")]
-        public override string? Email { get; set; } = "";
+        public override string Email { get; set; } = "";
 
         public DateTime RegisterationDate { get; set; }
 

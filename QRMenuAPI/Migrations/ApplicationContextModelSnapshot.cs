@@ -368,9 +368,9 @@ namespace QRMenuAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("QRMenuAPI.Models.State", "State")
-                        .WithMany()
+                        .WithMany("ApplicationUsers")
                         .HasForeignKey("StateId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -387,6 +387,11 @@ namespace QRMenuAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("State");
+                });
+
+            modelBuilder.Entity("QRMenuAPI.Models.State", b =>
+                {
+                    b.Navigation("ApplicationUsers");
                 });
 #pragma warning restore 612, 618
         }

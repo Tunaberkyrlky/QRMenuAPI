@@ -19,7 +19,7 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddDbContext<ApplicationContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationContext")));
+        options.UseSqlServer(builder.Configuration["ConnectionStrings:ApplicationDatabase"]));
         builder.Services.AddIdentityCore<ApplicationUser>()
             .AddEntityFrameworkStores<ApplicationContext>();
         builder.Services.AddAuthentication();

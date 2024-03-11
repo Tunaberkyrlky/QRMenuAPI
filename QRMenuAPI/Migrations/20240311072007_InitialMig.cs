@@ -122,8 +122,7 @@ namespace QRMenuAPI.Migrations
                         name: "FK_AspNetUsers_States_StateId",
                         column: x => x.StateId,
                         principalTable: "States",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

@@ -12,7 +12,7 @@ using QRMenuAPI.Data;
 namespace QRMenuAPI.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240308124831_InitialMig")]
+    [Migration("20240311072007_InitialMig")]
     partial class InitialMig
     {
         /// <inheritdoc />
@@ -371,9 +371,9 @@ namespace QRMenuAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("QRMenuAPI.Models.State", "State")
-                        .WithMany()
+                        .WithMany("ApplicationUsers")
                         .HasForeignKey("StateId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -390,6 +390,11 @@ namespace QRMenuAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("State");
+                });
+
+            modelBuilder.Entity("QRMenuAPI.Models.State", b =>
+                {
+                    b.Navigation("ApplicationUsers");
                 });
 #pragma warning restore 612, 618
         }
