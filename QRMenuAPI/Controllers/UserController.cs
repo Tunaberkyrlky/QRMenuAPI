@@ -16,12 +16,12 @@ namespace QRMenuAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly ApplicationContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public UserController(ApplicationContext context, UserManager<ApplicationUser> userManager)
+        public UserController(ApplicationContext context, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
-            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // GET: api/User
@@ -32,7 +32,7 @@ namespace QRMenuAPI.Controllers
           {
               return NotFound();
           }
-            return await _userManager.Users.ToListAsync();
+            return await _signInManager.UserManager.Users.ToListAsync();
         }
 
         // GET: api/User/5
@@ -40,7 +40,7 @@ namespace QRMenuAPI.Controllers
         public async Task<ActionResult<ApplicationUser>> GetApplicationUser(string id)
         {
        
-            var applicationUser = await _userManager.FindByIdAsync(id);
+            var applicationUser = await _signInManager.UserManager.FindByIdAsync(id);
 
             if (applicationUser == null)
             {
@@ -55,7 +55,7 @@ namespace QRMenuAPI.Controllers
         [HttpPut("{id}")]                                                                   //do not change password using put
         public  ActionResult PutApplicationUser(string id, ApplicationUser applicationUser/*, string? password= null, string? currentPassword = null*/)
         {
-            var existingApplicationUser = _userManager.FindByIdAsync(id).Result;
+            var existingApplicationUser = _signInManager.UserManager.FindByIdAsync(id).Result;
 
             existingApplicationUser.UserName = applicationUser.UserName;
             existingApplicationUser.Email = applicationUser.Email;
@@ -63,13 +63,13 @@ namespace QRMenuAPI.Controllers
             existingApplicationUser.PhoneNumber = applicationUser.PhoneNumber;
             existingApplicationUser.StateId = applicationUser.StateId;
 
-            _userManager.UpdateAsync(existingApplicationUser).Wait();
+            _signInManager.UserManager.UpdateAsync(existingApplicationUser).Wait();
 
             //if (password!=null)
             //{
             //    IdentityResult identityResult = _userManager.ChangePasswordAsync(existingApplicationUser, currentPassword, password);
             //}
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/User
@@ -78,7 +78,7 @@ namespace QRMenuAPI.Controllers
         public async Task<ActionResult<ApplicationUser>> PostApplicationUser(ApplicationUser applicationUser, string password)
         {
 
-            await _userManager.CreateAsync(applicationUser, password);
+            await _signInManager.UserManager.CreateAsync(applicationUser, password);
            
             return CreatedAtAction("GetApplicationUser", new { id = applicationUser.Id }, applicationUser);
         }
@@ -87,7 +87,7 @@ namespace QRMenuAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteApplicationUser(string id)
         {
-            var applicationUser = await _userManager.FindByIdAsync(id);
+            var applicationUser = await _signInManager.UserManager.FindByIdAsync(id);
             if (applicationUser == null)
             {
                 return NotFound();
@@ -97,13 +97,25 @@ namespace QRMenuAPI.Controllers
 
             //Soft delete
             applicationUser.StateId = 0;
-            await _userManager.UpdateAsync(applicationUser);
+            await _signInManager.UserManager.UpdateAsync(applicationUser);
             return NoContent();
         }
 
-        private bool ApplicationUserExists(string id)
-        {
-            return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
+        // POST: /Account/Login
+        [HttpPost("Login")]
+        public async Task<ActionResult> Login(string userName, string password)
+        {         
+            var result = await _signInManager.PasswordSignInAsync(userName, password, false, false);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
         }
+
+        
     }
 }
