@@ -91,8 +91,9 @@ Picture adding feature has to be added later
 
 QRMenuAPI/Controllers/UserController: [HttpPost(Login)] added
 QRMenuAPI/program.cs: addidentitycore service changed to addidentity
-
-
+QRMenuAPI/Controllers/UserController: [HttpPost("TokenlessResetPassword")] added
+QRMenuAPI/Controllers/UserController: [HttpPost("ResetPassword")] added
+QRMenuAPI/Controllers/UserController: [HttpPost("ValidateToken")] added
 
 
 

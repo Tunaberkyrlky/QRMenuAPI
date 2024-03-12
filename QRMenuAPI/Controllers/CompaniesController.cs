@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +24,7 @@ namespace QRMenuAPI.Controllers
         }
 
         // GET: api/Companies
+        [Authorize(Roles = "Administrator")] //system admin can use
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
         {
@@ -33,6 +36,7 @@ namespace QRMenuAPI.Controllers
         }
 
         // GET: api/Companies/5
+        [Authorize] //everyone can see
         [HttpGet("{id}")]
         public async Task<ActionResult<Company>> GetCompany(int id)
         {
@@ -52,6 +56,7 @@ namespace QRMenuAPI.Controllers
 
         // PUT: api/Companies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "CompanyAdministrator")] //only Company admin can change company informations
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCompany(int id, Company company)
         {
@@ -83,6 +88,7 @@ namespace QRMenuAPI.Controllers
 
         // POST: api/Companies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "Administrator")] //system admin can use
         [HttpPost]
         public async Task<ActionResult<Company>> PostCompany(Company company)
         {
@@ -97,6 +103,7 @@ namespace QRMenuAPI.Controllers
         }
 
         // DELETE: api/Companies/5
+        [Authorize(Roles = "Administrator, CompanyAdministrator")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompany(int id)
         {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,9 +21,9 @@ namespace QRMenuAPI.Controllers
         {
             _context = context;
         }
-        
+
         // GET: api/Categories
-        [HttpGet]
+        [HttpGet] 
         public async Task<ActionResult<IEnumerable<Category>>> GetCategory()
         {
           if (_context.Categories == null)
@@ -83,6 +84,7 @@ namespace QRMenuAPI.Controllers
 
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {

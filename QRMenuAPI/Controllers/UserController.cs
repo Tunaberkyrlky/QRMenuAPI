@@ -109,7 +109,7 @@ namespace QRMenuAPI.Controllers
             var result = await _signInManager.PasswordSignInAsync(userName, password, false, false);
             if (result.Succeeded)
             {
-                return Ok();
+                return Ok("Login succesfully");
             }
             else
             {
@@ -126,7 +126,7 @@ namespace QRMenuAPI.Controllers
                 return;
             }
             _signInManager.UserManager.RemovePasswordAsync(applicationUser).Wait();
-            _signInManager.UserManager.AddPasswordAsync(applicationUser, newPassword);
+            _signInManager.UserManager.AddPasswordAsync(applicationUser, newPassword).Wait();
         }
         [HttpPost("ResetPassword")]
         public string? ResetPassword(string userName)
