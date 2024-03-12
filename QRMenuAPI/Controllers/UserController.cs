@@ -28,10 +28,10 @@ namespace QRMenuAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetUsers()
         {
-          if (_context.Users == null)
-          {
-              return NotFound();
-          }
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
             return await _signInManager.UserManager.Users.ToListAsync();
         }
 
@@ -39,7 +39,7 @@ namespace QRMenuAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ApplicationUser>> GetApplicationUser(string id)
         {
-       
+
             var applicationUser = await _signInManager.UserManager.FindByIdAsync(id);
 
             if (applicationUser == null)
@@ -53,7 +53,7 @@ namespace QRMenuAPI.Controllers
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]                                                                   //do not change password using put
-        public  ActionResult PutApplicationUser(string id, ApplicationUser applicationUser/*, string? password= null, string? currentPassword = null*/)
+        public ActionResult PutApplicationUser(string id, ApplicationUser applicationUser/*, string? password= null, string? currentPassword = null*/)
         {
             var existingApplicationUser = _signInManager.UserManager.FindByIdAsync(id).Result;
 
@@ -79,7 +79,7 @@ namespace QRMenuAPI.Controllers
         {
 
             await _signInManager.UserManager.CreateAsync(applicationUser, password);
-           
+
             return CreatedAtAction("GetApplicationUser", new { id = applicationUser.Id }, applicationUser);
         }
 
@@ -105,7 +105,7 @@ namespace QRMenuAPI.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult> Login(string userName, string password)
         {
-            
+
             var result = await _signInManager.PasswordSignInAsync(userName, password, false, false);
             if (result.Succeeded)
             {
@@ -116,17 +116,44 @@ namespace QRMenuAPI.Controllers
                 return NotFound();
             }
         }
-        [HttpPost("ResetPassword")]
+        [HttpPost("TokenlessResetPassword")]
         public void ResetPassword(string userName, string newPassword)
         {
             ApplicationUser applicationUser = _signInManager.UserManager.FindByNameAsync(userName).Result;
 
-            if(applicationUser == null)
+            if (applicationUser == null)
             {
                 return;
             }
-            _signInManager.UserManager.RemovePasswordAsync(applicationUser);
+            _signInManager.UserManager.RemovePasswordAsync(applicationUser).Wait();
             _signInManager.UserManager.AddPasswordAsync(applicationUser, newPassword);
+        }
+        [HttpPost("ResetPassword")]
+        public string? ResetPassword(string userName)
+        {
+            ApplicationUser applicationUser = _signInManager.UserManager.FindByNameAsync(userName).Result;
+
+            if (applicationUser == null)
+            {
+                return null;
+            }
+            return _signInManager.UserManager.GeneratePasswordResetTokenAsync(applicationUser).Result;
+        }
+        [HttpPost("ValidateToken")]
+        public ActionResult<string?> ValidatePasswordResetToken(string userName, string token, string newPassWord)
+        {
+            ApplicationUser applicationUser = _signInManager.UserManager.FindByNameAsync(userName).Result;
+
+            if (applicationUser == null)
+            {
+                return null;
+            }
+            IdentityResult identityResult = _signInManager.UserManager.ResetPasswordAsync(applicationUser, token, newPassWord).Result;
+            if (identityResult.Succeeded == false)
+            {
+                return identityResult.Errors.First().Description;
+            }
+            return Ok();
         }
     }
 }

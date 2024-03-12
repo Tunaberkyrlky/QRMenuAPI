@@ -89,7 +89,10 @@ QRMenuAPI/Controllers/RestaurantsController
 Picture adding feature has to be added later
 
 
-QRMenuAPI/Controllers/UserController: [HttpPost("{id}")]
+QRMenuAPI/Controllers/UserController: [HttpPost(Login)] added
+QRMenuAPI/program.cs: addidentitycore service changed to addidentity
+
+
 
 
 
