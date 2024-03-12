@@ -84,10 +84,16 @@ New Controller Scaffold (API Controller with actions using Entity Framework)  fo
 QRMenuAPI/Controllers/RestaurantsController 
 
 
-
-
-
-
 ---------Day3----------
 
 Picture adding feature has to be added later
+
+
+QRMenuAPI/Controllers/UserController: [HttpPost("{id}")]
+
+
+
+
+
+
+

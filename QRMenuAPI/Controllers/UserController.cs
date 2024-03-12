@@ -104,7 +104,8 @@ namespace QRMenuAPI.Controllers
         // POST: /Account/Login
         [HttpPost("Login")]
         public async Task<ActionResult> Login(string userName, string password)
-        {         
+        {
+            
             var result = await _signInManager.PasswordSignInAsync(userName, password, false, false);
             if (result.Succeeded)
             {
@@ -115,7 +116,17 @@ namespace QRMenuAPI.Controllers
                 return NotFound();
             }
         }
+        [HttpPost("ResetPassword")]
+        public void ResetPassword(string userName, string newPassword)
+        {
+            ApplicationUser applicationUser = _signInManager.UserManager.FindByNameAsync(userName).Result;
 
-        
+            if(applicationUser == null)
+            {
+                return;
+            }
+            _signInManager.UserManager.RemovePasswordAsync(applicationUser);
+            _signInManager.UserManager.AddPasswordAsync(applicationUser, newPassword);
+        }
     }
 }
