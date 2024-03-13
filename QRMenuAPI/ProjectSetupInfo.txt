@@ -101,5 +101,18 @@ QRMenuAPI/Controllers/CompaniesController: Application Roles and their permissio
 ---------Day4----------
 
 QRMenuAPI/Models/ApplicationRole: ApplicationRole class added and inherited from IdentityRole
-QRMenuAPI/Data/ApplicationContext: State and IdentityRole seed data added
+QRMenuAPI/Data/ApplicationContext: State seed data added
 
+QRMenuAPI/Controllers/RolesManager: RolesManager controller scafollded from ApplicationRole class
+Delete Microsoft.ASPNETCore.Identity version 2.2.0 if it gives error
+QRMenuAPI/Models/ApplicationRole: Delete ApplicationRole class
+
+QRMenuAPI/Controllers/RolesManager: [HttpPost] Role creation method added.
+
+QRMenuAPI/Controllers/UserController: DI for RoleManager
+QRMenuAPI/Controllers/UserController:  [HttpPost("AssignRole")] method added.
+
+QRMenuAPI/Program.cs: new instances of State, IdentityRole and ApplicationUser classes are created
+QRMenuAPI/Data/ApplicationContext: State seed data deleted
+
+QRMenuAPI/Program.cs: State seed data and first UserRole assigned
