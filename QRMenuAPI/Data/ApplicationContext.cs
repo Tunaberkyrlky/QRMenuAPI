@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using QRMenuAPI.Models;
 
 
@@ -28,7 +29,14 @@ namespace QRMenuAPI.Data
             modelBuilder.Entity<RestaurantUser>().HasOne(r => r.Restaurant).WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<RestaurantUser>().HasOne(r => r.ApplicationUser).WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<RestaurantUser>().HasKey(r => new { r.RestaurantId, r.UserId });
+            modelBuilder.Entity<State>().HasData(
+                new State { Id = 0, Name = "Deleted" },
+                new State { Id = 1, Name = "Active" },
+                new State { Id = 2, Name = "Passive" }
+                );
             base.OnModelCreating(modelBuilder);
         }
+
+        
     }
 }

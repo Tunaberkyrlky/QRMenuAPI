@@ -95,9 +95,11 @@ QRMenuAPI/Controllers/UserController: [HttpPost("TokenlessResetPassword")] added
 QRMenuAPI/Controllers/UserController: [HttpPost("ResetPassword")] added
 QRMenuAPI/Controllers/UserController: [HttpPost("ValidateToken")] added
 
+QRMenuAPI/Controllers/CompaniesController: Application Roles and their permissions arranged
 
 
+---------Day4----------
 
-
-
+QRMenuAPI/Models/ApplicationRole: ApplicationRole class added and inherited from IdentityRole
+QRMenuAPI/Data/ApplicationContext: State and IdentityRole seed data added
 

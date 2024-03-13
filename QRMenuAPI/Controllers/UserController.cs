@@ -17,17 +17,20 @@ namespace QRMenuAPI.Controllers
     {
         private readonly ApplicationContext _context;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserController(ApplicationContext context, SignInManager<ApplicationUser> signInManager)
+        public UserController(ApplicationContext context, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         // GET: api/User
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetUsers()
         {
+           
             if (_context.Users == null)
             {
                 return NotFound();
@@ -75,14 +78,13 @@ namespace QRMenuAPI.Controllers
         // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ApplicationUser>> PostApplicationUser(ApplicationUser applicationUser, string password)
+        public string PostApplicationUser(ApplicationUser applicationUser, string password)
         {
 
-            await _signInManager.UserManager.CreateAsync(applicationUser, password);
+            _signInManager.UserManager.CreateAsync(applicationUser, password).Wait();
 
-            return CreatedAtAction("GetApplicationUser", new { id = applicationUser.Id }, applicationUser);
+            return applicationUser.Id;
         }
-
         // DELETE: api/User/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteApplicationUser(string id)
@@ -154,6 +156,16 @@ namespace QRMenuAPI.Controllers
                 return identityResult.Errors.First().Description;
             }
             return Ok();
+        }
+
+        [HttpPost("AssignRole")]
+        public ActionResult AssignRole(string userId, string roleId)
+        {
+            ApplicationUser applicationUser = _signInManager.UserManager.FindByIdAsync(userId).Result;
+            IdentityRole identityRole = _roleManager.FindByIdAsync(roleId).Result;
+
+            _signInManager.UserManager.AddToRoleAsync(applicationUser, identityRole.Name).Wait();
+            return Ok($"{identityRole.Name} role is assigned to {applicationUser.Name}");
         }
     }
 }
