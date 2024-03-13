@@ -116,3 +116,4 @@ QRMenuAPI/Program.cs: new instances of State, IdentityRole and ApplicationUser c
 QRMenuAPI/Data/ApplicationContext: State seed data deleted
 
 QRMenuAPI/Program.cs: State seed data and first UserRole assigned
+QRMenuAPI/Program.cs: Initial Company seed data added
