@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using QRMenuAPI.Data;
 using QRMenuAPI.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace QRMenuAPI.Controllers
 {
@@ -105,18 +106,23 @@ namespace QRMenuAPI.Controllers
 
         // POST: /Account/Login
         [HttpPost("Login")]
-        public async Task<ActionResult> Login(string userName, string password)
+        public bool Login(string userName, string password)
         {
-
-            var result = await _signInManager.PasswordSignInAsync(userName, password, false, false);
-            if (result.Succeeded)
+            Microsoft.AspNetCore.Identity.SignInResult signInResult;
+            ApplicationUser applicationUser = _signInManager.UserManager.FindByNameAsync(userName).Result;
+            Claim claim;
+            if ( applicationUser == null)
             {
-                return Ok("Login succesfully");
+                return false;
             }
-            else
+            signInResult = _signInManager.PasswordSignInAsync(applicationUser, password, false, false).Result;
+            if (signInResult.Succeeded == true)
             {
-                return NotFound();
+                claim = new Claim("CompanyId", applicationUser.CompanyId.ToString());
+                _signInManager.UserManager.AddClaimAsync(applicationUser, claim);
+                return true;
             }
+            return signInResult.Succeeded;
         }
         [HttpPost("TokenlessResetPassword")]
         public void ResetPassword(string userName, string newPassword)

@@ -59,10 +59,14 @@ namespace QRMenuAPI.Controllers
 
         // PUT: api/Companies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Authorize(Roles = "  ")] //only Company admin can change company informations
+        [Authorize(Roles = "CompanyAdministrator")] //only Company admin can change company informations
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCompany(int id, Company company)
         {
+            if(User.HasClaim("CompanyId",id.ToString())== false)
+            {
+                return Unauthorized();
+            }
             if (id != company.Id)
             {
                 return BadRequest();
