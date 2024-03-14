@@ -117,3 +117,8 @@ QRMenuAPI/Data/ApplicationContext: State seed data deleted
 
 QRMenuAPI/Program.cs: State seed data and first UserRole assigned
 QRMenuAPI/Program.cs: Initial Company seed data added
+
+
+---------Day5----------
+
+QRMenuAPI/Controllers/CompaniesController: [HttpPost] While creating a company, a company admin user created simultaniously.
