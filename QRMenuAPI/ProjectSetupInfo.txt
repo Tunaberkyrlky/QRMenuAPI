@@ -124,3 +124,4 @@ QRMenuAPI/Program.cs: Initial Company seed data added
 QRMenuAPI/Controllers/CompaniesController: [HttpPost] While creating a company, a company admin user created simultaniously.
 QRMenuAPI/Controllers/UserController:[HttpPost("Login")] User claim assigned
 QRMenuAPI/Controllers/CompaniesController: [HttpPut("{id}")] Check user claim to send put request
+QRMenuAPI/Controllers/CompaniesController: [HttpPost] While creating a company, claim declared to company admin user  

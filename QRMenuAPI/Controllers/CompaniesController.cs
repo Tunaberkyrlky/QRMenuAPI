@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -63,33 +64,12 @@ namespace QRMenuAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCompany(int id, Company company)
         {
-            if(User.HasClaim("CompanyId",id.ToString())== false)
+            if(User.HasClaim("CompanyId",company.Id.ToString())== false)
             {
                 return Unauthorized();
             }
-            if (id != company.Id)
-            {
-                return BadRequest();
-            }
-
             _context.Entry(company).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CompanyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _context.SaveChanges();
             return NoContent();
         }
 
@@ -100,7 +80,7 @@ namespace QRMenuAPI.Controllers
         public int PostCompany(Company company)
         {
             ApplicationUser applicationUser = new ApplicationUser();
-
+            Claim claim;
             _context.Companies.Add(company);
             _context.SaveChanges();
             applicationUser.CompanyId = company.Id;
@@ -110,8 +90,10 @@ namespace QRMenuAPI.Controllers
             applicationUser.RegisterationDate = DateTime.Today;
             applicationUser.StateId = 1;
             applicationUser.UserName = "Administrator" + company.Id.ToString();
-            _userManager.CreateAsync(applicationUser, "TemporaryAdminPass123!");
-            _userManager.AddToRoleAsync(applicationUser, "CompanyAdministrator");
+            _userManager.CreateAsync(applicationUser, "TemporaryAdminPass123!").Wait();
+            claim = new Claim("CompanyId", company.Id.ToString());
+            _userManager.AddClaimAsync(applicationUser, claim).Wait();
+            _userManager.AddToRoleAsync(applicationUser, "CompanyAdministrator").Wait();
             return company.Id;
         }
 
